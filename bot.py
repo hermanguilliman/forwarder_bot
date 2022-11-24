@@ -20,9 +20,9 @@ class Passport:
 
 def load_config():
     try:
-        config = Passport(tg_admin=os.getenv('TG_ADMIN'),
+        config = Passport(tg_admin=int(os.getenv('TG_ADMIN')),
                         tg_bot_token=os.getenv('TOKEN'),
-                        tg_promo=int(os.getenv('PROMO')),
+                        tg_promo=os.getenv('PROMO'),
                         antiflood_timer=int(os.getenv('ANTIFLOOD') or 5),
                         )
     except:
@@ -36,6 +36,7 @@ bot = Bot(token=config.tg_bot_token)
 dp = Dispatcher(bot)
 dp = Dispatcher(bot, storage=MemoryStorage())
 dp.middleware.setup(ThrottlingMiddleware())
+
 
 @dp.message_handler(commands=['start'])
 async def hello(message: types.Message):
