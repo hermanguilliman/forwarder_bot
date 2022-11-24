@@ -37,7 +37,7 @@ dp = Dispatcher(bot, storage=MemoryStorage())
 dp.middleware.setup(ThrottlingMiddleware())
 
 @dp.message_handler(content_types=types.ContentType.ANY)
-@rate_limit(config.antiflood_timer)
+@rate_limit(int(config.antiflood_timer))
 async def sink_hole(message: types.Message):
     await message.answer_chat_action('typing')
     await message.reply(f'Ваше сообщение принято!\nСледующая отправка будет доступна через {config.antiflood_timer} секунд')
