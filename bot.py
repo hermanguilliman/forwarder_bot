@@ -5,7 +5,6 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram import types
 from dataclasses import dataclass
-from configparser import ConfigParser
 from middlewares.antiflood import rate_limit, ThrottlingMiddleware
 # Configure logging
 logging.basicConfig(level=logging.INFO)
