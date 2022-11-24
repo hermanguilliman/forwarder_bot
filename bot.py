@@ -45,8 +45,7 @@ dp.middleware.setup(ThrottlingMiddleware())
 @dp.message_handler(commands=['start'])
 @rate_limit(10)
 async def hello(message: types.Message):
-    await message.answer(f'Привет! Это предложка канала {config.tg_promo}',
-                         reply_markup='HTML')
+    await message.reply(f'Привет! Это предложка канала {config.tg_promo}')
     
     
 @dp.message_handler(content_types=types.ContentType.ANY)
