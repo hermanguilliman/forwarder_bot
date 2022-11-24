@@ -4,19 +4,21 @@
 
 Бот очень компактный и имеет на борту только антифлуд.
 
-Запуск контейнера:
+Запуск контейнера c обязательными параметрами:
 
-    docker run -d \
-    -e TG_ADMIN=YOUR_ID \
+    docker run -d --restart=always\
+    -e TG_ADMIN=YOUR_ADMIN_ID \
     -e TOKEN=BOT_TOKEN_FROM_BOTFATHER \
+    -e PROMO=NAME_OF_YOUR_PROMO_CHANNEL \
     --name memebot gentlemantleman/memebot
 
-Так же можно изменить значение секунд таймера антифлуда (стандартное 5 секунд)
+С дополнительными параметрами:
 
-    docker run -d \
+    docker run -d --restart=always \
     -e TG_ADMIN=YOUR_ID \
     -e TOKEN=BOT_TOKEN_FROM_BOTFATHER \
-    -e ANTIFLOOD=10 \
+    -e PROMO=NAME_OF_YOUR_PROMO_CHANNEL \
+    -e ANTIFLOOD=5 \
     --name memebot gentlemantleman/memebot
 
 ![Пример работы](https://i.ibb.co/NsJ8nQn/bbb.png)

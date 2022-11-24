@@ -14,17 +14,19 @@ logging.basicConfig(level=logging.INFO)
 class Passport:
     tg_admin: int
     tg_bot_token: str
+    tg_promo: str
     antiflood_timer: int
     
 
 def load_config():
-    try: 
+    try:
         config = Passport(tg_admin=os.getenv('TG_ADMIN'),
                         tg_bot_token=os.getenv('TOKEN'),
-                        antiflood_timer=os.getenv('ANTIFLOOD'))
+                        tg_promo=int(os.getenv('PROMO')),
+                        antiflood_timer=int(os.getenv('ANTIFLOOD') or 5),
+                        )
     except:
-        sys.exit('Config error!')
-        
+        sys.exit('Config error. Terminating...')
     return config
         
 
@@ -35,11 +37,18 @@ dp = Dispatcher(bot)
 dp = Dispatcher(bot, storage=MemoryStorage())
 dp.middleware.setup(ThrottlingMiddleware())
 
+@dp.message_handler(commands=['start'])
+async def hello(message: types.Message):
+    await message.answer(f'Привет! Это предложка канала {config.tg_promo}',
+                         reply_markup='HTML')
+    
+    
 @dp.message_handler(content_types=types.ContentType.ANY)
 @rate_limit(int(config.antiflood_timer))
 async def sink_hole(message: types.Message):
     await message.answer_chat_action('typing')
-    await message.reply(f'Ваше сообщение принято!\nСледующая отправка будет доступна через {config.antiflood_timer} секунд')
+    await message.reply(f'Ваше сообщение принято!\n \
+        Следующая отправка будет доступна через {config.antiflood_timer} секунд')
     await message.forward(chat_id=config.tg_admin)
 
     
