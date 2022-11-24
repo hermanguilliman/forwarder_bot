@@ -20,10 +20,6 @@ class Passport:
 
 def load_config():
     try:
-        print(os.getenv('TG_ADMIN'))
-        print(os.getenv('TOKEN'))
-        print(os.getenv('PROMO'))
-        print(os.getenv('ANTIFLOOD'))
         config = Passport(tg_admin=int(os.getenv('TG_ADMIN')),
                           tg_bot_token=os.getenv('TOKEN'),
                           tg_promo=os.getenv('PROMO'),
