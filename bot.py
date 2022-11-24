@@ -48,8 +48,7 @@ async def hello(message: types.Message):
 @rate_limit(int(config.antiflood_timer))
 async def sink_hole(message: types.Message):
     await message.answer_chat_action('typing')
-    await message.reply(f'''Ваше сообщение принято!\n
-                        Следующая отправка будет доступна через {config.antiflood_timer} секунд''')
+    await message.reply(f'''Ваше сообщение принято!\nСледующая отправка будет доступна через {config.antiflood_timer} секунд''')
     await message.forward(chat_id=config.tg_admin)
 
     
