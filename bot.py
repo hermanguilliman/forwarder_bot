@@ -20,11 +20,15 @@ class Passport:
 
 def load_config():
     try:
+        print(os.getenv('TG_ADMIN'))
+        print(os.getenv('TOKEN'))
+        print(os.getenv('PROMO'))
+        print(os.getenv('ANTIFLOOD'))
         config = Passport(tg_admin=int(os.getenv('TG_ADMIN')),
-                        tg_bot_token=os.getenv('TOKEN'),
-                        tg_promo=os.getenv('PROMO'),
-                        antiflood_timer=int(os.getenv('ANTIFLOOD') or 5),
-                        )
+                          tg_bot_token=os.getenv('TOKEN'),
+                          tg_promo=os.getenv('PROMO'),
+                          antiflood_timer=int(os.getenv('ANTIFLOOD')) or 5,
+                          )
     except:
         sys.exit('Config error. Terminating...')
     return config
@@ -39,6 +43,7 @@ dp.middleware.setup(ThrottlingMiddleware())
 
 
 @dp.message_handler(commands=['start'])
+@rate_limit(10)
 async def hello(message: types.Message):
     await message.answer(f'Привет! Это предложка канала {config.tg_promo}',
                          reply_markup='HTML')
