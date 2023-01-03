@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram import types
@@ -19,6 +20,8 @@ class Passport:
     
 
 def load_config():
+    # Load environment variables from .env file
+    load_dotenv()
     try:
         config = Passport(tg_admin=int(os.getenv('TG_ADMIN')),
                           tg_bot_token=os.getenv('TOKEN'),
@@ -44,13 +47,12 @@ async def hello(message: types.Message):
     await message.reply(f'Привет! Это предложка канала {config.tg_promo}')
     
     
-@dp.message_handler(content_types=types.ContentType.ANY)
+@dp.message_handler(lambda message: message.from_user.id != config.tg_admin, content_types=types.ContentType.ANY)
 @rate_limit(int(config.antiflood_timer))
 async def sink_hole(message: types.Message):
     await message.answer_chat_action('typing')
     await message.reply(f'''Ваше сообщение принято!\nСледующая отправка будет доступна через {config.antiflood_timer} секунд''')
     await message.forward(chat_id=config.tg_admin)
 
-    
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
